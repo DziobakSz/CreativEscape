@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity  {
     private LoginButton FBlogin;
     private AccessTokenTracker accessTokenTracker;
     private Button LoginButton;
+    private Button RegisterButton;
     private ProgressDialog loadingBar;
 
 
@@ -82,6 +83,14 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 AllowingUserToLogin();
+            }
+        });
+
+        RegisterButton = (Button) findViewById(R.id.register_button);
+        RegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SendUserToRegisterActivity();
             }
         });
 
@@ -168,8 +177,7 @@ public class MainActivity extends AppCompatActivity  {
 
     private void updateUI(FirebaseUser user) {
         if(user != null) {
-            //i tu co się stanie po poprawnym zalogownaiu
-            //i z tutorialu https://www.youtube.com/watch?v=ImbuK35vmzs&ab_channel=EasyLearn od 19 minuty to się przyda później
+            SendUserToFirstActivity();
         }
     }
 
@@ -202,6 +210,7 @@ public class MainActivity extends AppCompatActivity  {
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
                 Toast.makeText(this, "Please wait, while we are getting your auth result...", Toast.LENGTH_SHORT).show();
+
             }
             else
             {
@@ -224,14 +233,14 @@ public class MainActivity extends AppCompatActivity  {
                         if (task.isSuccessful())
                         {
                             Log.d(TAG, "signInWithCredential:success");
-                            //SendUserToMainActivity();
+                            SendUserToFirstActivity();
                             loadingBar.dismiss();
                         }
                         else
                         {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             String message = task.getException().toString();
-                            //SendUserToLoginActivity();
+                            SendUserToMainActivity();
                             Toast.makeText(MainActivity.this, "Not Authenticated : " + message, Toast.LENGTH_SHORT).show();
                             loadingBar.dismiss();
                         }
@@ -300,5 +309,24 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
+    private void SendUserToFirstActivity()
+    {
+        Intent mainIntent = new Intent(MainActivity.this, FirstActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
+    }
+    private void SendUserToMainActivity()
+    {
+        Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
+    }
+    private void SendUserToRegisterActivity()
+    {
+        Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
+        startActivity(registerIntent);
+    }
 
     }

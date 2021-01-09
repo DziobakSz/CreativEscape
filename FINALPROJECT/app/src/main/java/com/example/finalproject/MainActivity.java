@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity  {
     private AccessTokenTracker accessTokenTracker;
     private Button LoginButton;
     private ProgressDialog loadingBar;
+
+
     private EditText UserEmail, UserPassword;
     private static final String TAG = "FacebookAuthentiblabla";
     private SignInButton googleSignInButton;
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity  {
         mFirebaseAuth = FirebaseAuth.getInstance();
         FacebookSdk.sdkInitialize(getApplicationContext());
 
+        loadingBar = new ProgressDialog(this);
         UserEmail = (EditText) findViewById(R.id.login_EditText);
         UserPassword = (EditText) findViewById(R.id.password_EditText);
         googleSignInButton = (SignInButton) findViewById(R.id.sign_in_button);

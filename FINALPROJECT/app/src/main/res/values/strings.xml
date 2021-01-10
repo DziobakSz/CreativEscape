@@ -3,6 +3,10 @@
     <string name="facebook_app_id">423928491977172</string>
     <string name="fb_login_protocol_scheme">fb423928491977172</string>
     <string name="g_login_protocol_scheme">fb423928491977172</string>
+    <string name="title_activity_menu">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 
 </resources>

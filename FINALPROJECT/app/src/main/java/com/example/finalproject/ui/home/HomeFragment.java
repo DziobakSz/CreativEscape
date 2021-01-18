@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
 
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         ChalRef = FirebaseDatabase.getInstance().getReference();
-        challangeList = (RecyclerView) root.findViewById(R.id.challange_list);
+        challangeList = (RecyclerView) root.findViewById(R.id.all_users_post_list);
         challangeList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext());
         linearLayoutManager.setReverseLayout(true);

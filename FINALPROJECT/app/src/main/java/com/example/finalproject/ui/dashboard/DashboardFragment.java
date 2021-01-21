@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,7 +15,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.finalproject.Challange;
 import com.example.finalproject.R;
+import com.example.finalproject.ui.home.HomeFragment;
 import com.facebook.appevents.ml.Model;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -23,12 +26,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.squareup.picasso.Picasso;
 
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
     private RecyclerView postList;
     private DatabaseReference PostsRef;
+    private  FirebaseRecyclerAdapter<Posts, DashboardFragment.PostsViewHolder> mFirebaseAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +48,7 @@ public class DashboardFragment extends Fragment {
         linearLayoutManager.setStackFromEnd(true);
         postList.setLayoutManager(linearLayoutManager);
 
-        PostsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
+        PostsRef = FirebaseDatabase.getInstance().getReference();
 
         DisplayAllUsersPosts();
 
@@ -64,43 +69,33 @@ public class DashboardFragment extends Fragment {
             .getReference()
             .child("Posts");
 
-    FirebaseRecyclerOptions<Model> options =
-            new FirebaseRecyclerOptions.Builder<Model>()
-                    .setQuery(query, new SnapshotParser<Model>() {
-                        @NonNull
-                        @Override
-                        public Model parseSnapshot(@NonNull DataSnapshot snapshot) {
-                            return new Posts(snapshot.child("uid").getValue().toString(),
-                                    snapshot.child("date").getValue().toString(),
-                                    snapshot.child("time").getValue().toString(),
-                                    snapshot.child("username").getValue().toString(),
-                                    snapshot.child("description").getValue().toString(),
-                                    snapshot.child("post_image").getValue().toString()
-                                    snapshot.child("profile_image").getValue().toString());
-                        }
-                    })
+    FirebaseRecyclerOptions<Posts> options =
+            new FirebaseRecyclerOptions.Builder<Posts>().setQuery(query, Posts.class)
                     .build();
-
 
     //koniec rzeczy z internetu
 
     private void DisplayAllUsersPosts() {
-        FirebaseRecyclerAdapter<Posts, PostsViewHolder> firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<Posts, PostsViewHolder>
-                        (options){
+        mFirebaseAdapter = new FirebaseRecyclerAdapter<Posts, DashboardFragment.PostsViewHolder>(options){
                     @NonNull
                     @Override
                     public PostsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        return null;
+                        View view = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.all_posts_layout, parent, false);
+                        return new PostsViewHolder(view);
                     }
 
                     @Override
-                    protected void onBindViewHolder(@NonNull PostsViewHolder holder, int position, @NonNull Posts model) {
-
+                    protected void onBindViewHolder(@NonNull PostsViewHolder  viewHolder, int position, @NonNull Posts model) {
+                        viewHolder.setFullname(model.getUsername());
+                        viewHolder.setTime(model.getTime());
+                        viewHolder.setDate(model.getDate());
+                        viewHolder.setDescription(model.getDescription());
+                        viewHolder.setPostimage( model.getPost_image());
                     }
 
                 };
-        postList.setAdapter(firebaseRecyclerAdapter);
+        postList.setAdapter( mFirebaseAdapter);
     }
 
     public static class PostsViewHolder extends RecyclerView.ViewHolder{
@@ -110,5 +105,48 @@ public class DashboardFragment extends Fragment {
             super(itemView);
             mView = itemView;
         }
+
+        public void setFullname(String fullname)
+        {
+            TextView username = (TextView) mView.findViewById(R.id.post_username);
+            username.setText(fullname);
+        }
+
+
+        public void setTime(String time)
+        {
+            TextView PostTime = (TextView) mView.findViewById(R.id.post_time);
+            PostTime.setText("    " + time);
+        }
+
+        public void setDate(String date)
+        {
+            TextView PostDate = (TextView) mView.findViewById(R.id.post_date);
+            PostDate.setText("    " + date);
+        }
+
+        public void setDescription(String description)
+        {
+            TextView PostDescription = (TextView) mView.findViewById(R.id.desc);
+            PostDescription.setText(description);
+        }
+
+        public void setPostimage(  String postimage)
+        {
+            ImageView PostImage = (ImageView) mView.findViewById(R.id.post_image);
+            Picasso.get().load(postimage).fit().into(PostImage);
+        }
+    }
+
+    @Override
+    public void onStart() { // Ph4 Reading chat
+        super.onStart();
+        mFirebaseAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() { // Ph4 Reading chat
+        super.onStop();
+        mFirebaseAdapter.stopListening();
     }
 }

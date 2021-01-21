@@ -1,7 +1,6 @@
 package com.example.finalproject.ui.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finalproject.Challange;
 import com.example.finalproject.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
@@ -63,7 +61,8 @@ public class HomeFragment extends Fragment {
             protected void onBindViewHolder(ChallangeViewHolder holder, int position, Challange model) {
                 holder.setFullname(model.getTitle());
                 holder.setPostimage( model.getPhoto());
-                Log.d("tag",model.getPhoto());
+
+
 
             }
 

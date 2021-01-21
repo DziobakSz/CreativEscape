@@ -85,6 +85,7 @@ public class DashboardFragment extends Fragment {
                         viewHolder.setDate(model.getDate());
                         viewHolder.setDescription(model.getDescription());
                         viewHolder.setPostimage( model.getPost_image());
+                        viewHolder.setProfileImage(model.getProfile_image());
                     }
 
                 };
@@ -101,7 +102,7 @@ public class DashboardFragment extends Fragment {
 
         public void setFullname(String fullname)
         {
-            TextView username = (TextView) mView.findViewById(R.id.post_username);
+            TextView username = (TextView) mView.findViewById(R.id.my_profile_user_name);
             username.setText(fullname);
         }
 
@@ -120,7 +121,7 @@ public class DashboardFragment extends Fragment {
 
         public void setDescription(String description)
         {
-            TextView PostDescription = (TextView) mView.findViewById(R.id.desc);
+            TextView PostDescription = (TextView) mView.findViewById(R.id.post_content);
             PostDescription.setText(description);
         }
 
@@ -128,6 +129,10 @@ public class DashboardFragment extends Fragment {
         {
             ImageView PostImage = (ImageView) mView.findViewById(R.id.post_image);
             Picasso.get().load(postimage).fit().into(PostImage);
+        }
+        public void setProfileImage (String profileImage){
+            ImageView ProfileImage = (ImageView) mView.findViewById(R.id.prof_image);
+            Picasso.get().load(profileImage).fit().into(ProfileImage);
         }
     }
 

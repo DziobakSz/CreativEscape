@@ -22,7 +22,7 @@
             android:padding="5dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/post_profile_image"
+                android:id="@+id/prof_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginLeft="4dp"
@@ -35,7 +35,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/post_username"
+                    android:id="@+id/my_profile_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"

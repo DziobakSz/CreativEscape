@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.finalproject.MenuActivity;
 import com.example.finalproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,7 +22,7 @@ public class FirstActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference UsersRef;
 
-    private Button Logout;
+    private Button Logout,Next;
     String currentUserID;
 
     @Override
@@ -46,6 +47,13 @@ public class FirstActivity extends AppCompatActivity {
             }
         });
 
+        Next = (Button) findViewById(R.id.log_out2);
+        Next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SendUserToMenuActivity();
+            }
+        });
     }
     @Override
     protected void onStart()
@@ -97,6 +105,14 @@ public class FirstActivity extends AppCompatActivity {
         finish();
     }
 
+
+    private void SendUserToMenuActivity()
+    {
+        Intent setupIntent = new Intent(FirstActivity.this, MenuActivity.class);
+        setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(setupIntent);
+        finish();
+    }
 
 
     private void SendUserToLoginActivity()

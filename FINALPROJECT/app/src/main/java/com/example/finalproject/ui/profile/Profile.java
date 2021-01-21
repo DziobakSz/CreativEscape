@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.finalproject.NewPostActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.login.MainActivity;
 import com.example.finalproject.login.RegisterActivity;
@@ -51,22 +52,24 @@ public class Profile extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        View root = inflater.inflate(R.layout.profile_fragment, container, false);
+
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         ProfRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
-        profileSettings = (Button) findViewById(R.id.profileSettingsBtn);
+        profileSettings = (ImageButton) root.findViewById(R.id.profileSettingsBtn);
         profileSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent registerIntent = new Intent(this, ProfileSettings.class);//tu nie wiem jak do settingsów go przekierować
+                    Intent registerIntent = new Intent(getActivity(), NewPostActivity.class);//tu nie wiem jak do settingsów go przekierować
                     startActivity(registerIntent);
 
             }
         });
 
-        userImage = (CircleImageView) findViewById(R.id.my_profile_pic);
-        userName = (TextView) findViewById(R.id.my_profile_user_name);
-        fullName = (TextView) findViewById(R.id.my_profile_full_name);
+        userImage = (CircleImageView) root.findViewById(R.id.my_profile_pic);
+        userName = (TextView) root.findViewById(R.id.my_profile_user_name);
+        fullName = (TextView) root.findViewById(R.id.my_profile_full_name);
         ProfRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -87,14 +90,10 @@ public class Profile extends Fragment {
 
             }
         });
-        return inflater.inflate(R.layout.profile_fragment, container, false);
+        //return inflater.inflate(R.layout.profile_fragment, container, false);
+        return root;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
-        // TODO: Use the ViewModel
-    }
+
 
 }

@@ -1,9 +1,14 @@
 package com.example.finalproject.ui.home;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.finalproject.ChallangeInfoActivity;
+import com.example.finalproject.NewPostActivity;
 import com.example.finalproject.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
@@ -61,7 +68,7 @@ public class HomeFragment extends Fragment {
             protected void onBindViewHolder(ChallangeViewHolder holder, int position, Challange model) {
                 holder.setFullname(model.getTitle());
                 holder.setPostimage( model.getPhoto());
-
+                holder.setID(model.getUid());
 
 
             }
@@ -93,10 +100,25 @@ public class HomeFragment extends Fragment {
 
     public static class ChallangeViewHolder extends RecyclerView.ViewHolder {
         View mView;
+        private Context context;
+        String tag;
 
         public ChallangeViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
+            context = itemView.getContext();
+            ImageButton More = (ImageButton) mView.findViewById(R.id.imageButton2);
+
+
+            More.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent  intent =  new Intent(context, ChallangeInfoActivity.class);
+                    intent.putExtra("ID", tag);
+                    context.startActivity(intent);
+                }
+            });
         }
 
         public void setFullname(String title) {
@@ -109,5 +131,12 @@ public class HomeFragment extends Fragment {
             Picasso.get().load(postimage).fit().into(PostImage);
 
         }
+        public void setID( String tag) {
+          this.tag= tag;
+        }
+    }
+    public void GoToINFO() {
+        Intent registerIntent = new Intent(getActivity(), NewPostActivity.class);//tu nie wiem jak do settingsów go przekierować
+        startActivity(registerIntent);
     }
 }

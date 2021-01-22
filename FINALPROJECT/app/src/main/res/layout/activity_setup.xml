@@ -14,7 +14,7 @@
         android:layout_marginStart="132dp"
         android:layout_marginTop="24dp"
         android:background="#FDF8F8"
-        app:civ_border_color="@color/purple_700"
+        app:civ_border_color="@color/mpink"
         app:civ_border_width="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

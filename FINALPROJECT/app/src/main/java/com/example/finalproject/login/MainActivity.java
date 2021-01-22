@@ -3,6 +3,7 @@ package com.example.finalproject.login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.finalproject.MenuActivity;
 import com.example.finalproject.R;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity  {
 
     private void updateUI(FirebaseUser user) {
         if(user != null) {
-            SendUserToFirstActivity();
+            SendUserToMenuActivity();
         }
     }
 
@@ -231,7 +232,7 @@ public class MainActivity extends AppCompatActivity  {
                         if (task.isSuccessful())
                         {
                             Log.d(TAG, "signInWithCredential:success");
-                            SendUserToFirstActivity();
+                            SendUserToMenuActivity();
                             loadingBar.dismiss();
                         }
                         else
@@ -292,7 +293,7 @@ public class MainActivity extends AppCompatActivity  {
                             if(task.isSuccessful())
                             {
                                // SendUserToMainActivity();
-
+                                SendUserToMenuActivity();
                                 Toast.makeText(MainActivity.this, "you are Logged In successfully.", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             }
@@ -307,9 +308,9 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
-    private void SendUserToFirstActivity()
+    private void SendUserToMenuActivity()
     {
-        Intent mainIntent = new Intent(MainActivity.this, FirstActivity.class);
+        Intent mainIntent = new Intent(MainActivity.this, MenuActivity.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);
         finish();

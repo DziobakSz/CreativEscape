@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.finalproject.NewPostActivity;
 import com.example.finalproject.R;
+import com.example.finalproject.SettingsActivity;
 import com.example.finalproject.login.MainActivity;
 import com.example.finalproject.login.RegisterActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -61,7 +62,7 @@ public class Profile extends Fragment {
         profileSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent registerIntent = new Intent(getActivity(), NewPostActivity.class);//tu nie wiem jak do settingsów go przekierować
+                    Intent registerIntent = new Intent(getActivity(), SettingsActivity.class);
                     startActivity(registerIntent);
 
             }

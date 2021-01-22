@@ -75,11 +75,11 @@ public class Profile extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
               if(snapshot.exists()){
-                  String myProfileImage = snapshot.child("").getValue().toString(); //tu nie wiem pod jakim hasłem to jest w bazie
+                 // String myProfileImage = snapshot.child("profileimage").getValue().toString(); //tu nie wiem pod jakim hasłem to jest w bazie
                   String myUserName = snapshot.child("username").getValue().toString();
                   String myFullName = snapshot.child("fullname").getValue().toString();
 
-                  Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userImage);
+                 // Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userImage);
                   userName.setText(myUserName);
                   fullName.setText(myFullName);
               }

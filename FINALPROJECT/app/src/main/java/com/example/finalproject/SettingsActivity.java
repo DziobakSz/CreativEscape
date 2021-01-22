@@ -308,6 +308,7 @@ public class SettingsActivity extends AppCompatActivity {
                 {
                     if(task.isSuccessful())
                     {
+
                         SendUserToProfileActivity();
                         Toast.makeText(SettingsActivity.this, "your Account was updated Successfully.", Toast.LENGTH_LONG).show();
                         loadingBar.dismiss();

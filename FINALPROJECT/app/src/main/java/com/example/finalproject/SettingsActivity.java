@@ -52,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
     private CircleImageView ProfileImage;
     private ProgressDialog loadingBar;
     private ImageButton changeProfilePic;
-    private CheckBox DIY,Sport,Book,Music,Food,Photo;
+    private CheckBox DIY, Sport, Book, Music, Food, Photo;
     private StorageReference UserProfileImageRef;
     final static int Gallery_Pick = 1;
 
@@ -65,13 +65,13 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.profile_settings_layout);
         mFirebaseAuth = FirebaseAuth.getInstance();
         currentUserID = mFirebaseAuth.getCurrentUser().getUid();
-        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
         UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
 
         UserName = (EditText) findViewById(R.id.username_profile_edit);
         FullName = (EditText) findViewById(R.id.name_profile_edit);
-        SaveButton = (Button) findViewById(R.id.save_button2) ;
+        SaveButton = (Button) findViewById(R.id.save_button2);
         ProfileImage = (CircleImageView) findViewById(R.id.my_profile_pic);
         DIY = (CheckBox) findViewById(R.id.DIY_check2);
         Sport = (CheckBox) findViewById(R.id.sport_check2);
@@ -83,49 +83,44 @@ public class SettingsActivity extends AppCompatActivity {
 
         loadingBar = new ProgressDialog(this);
 
-        SaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                SaveAccountSetupInformation();
-            }
-        });
-
-
-
-
-
-
 
         UsersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
 
-                    String DIYState = snapshot.child(currentUserID).child("iDIY").getValue().toString();
-                    String BookState = snapshot.child(currentUserID).child("iBook").getValue().toString();
-                    String FoodState = snapshot.child(currentUserID).child("iFood").getValue().toString();
-                    String MusicState = snapshot.child(currentUserID).child("iMusic").getValue().toString();
-                    String PhotoState = snapshot.child(currentUserID).child("iPhoto").getValue().toString();
-                    String SportState = snapshot.child(currentUserID).child("iSport").getValue().toString();
+                    String DIYState = snapshot.child("iDIY").getValue().toString();
+                    String BookState = snapshot.child("iBook").getValue().toString();
+                    String FoodState = snapshot.child("iFood").getValue().toString();
+                    String MusicState = snapshot.child("iMusic").getValue().toString();
+                    String PhotoState = snapshot.child("iPhoto").getValue().toString();
+                    String SportState = snapshot.child("iSport").getValue().toString();
 
-                    String username = snapshot.child(currentUserID).child("username").getValue().toString();
-                    String fullname = snapshot.child(currentUserID).child("fullname").getValue().toString();
+                    String username = snapshot.child("username").getValue().toString();
+                    String fullname = snapshot.child("fullname").getValue().toString();
 
-                    if(DIYState=="true") DIY.setChecked(true);
+                    if (DIYState == "true") DIY.setChecked(true);
                     else DIY.setChecked(false);
-                    if(BookState=="true") Book.setChecked(true);
+                    if (BookState == "true") Book.setChecked(true);
                     else Book.setChecked(false);
-                    if(FoodState=="true") Food.setChecked(true);
+                    if (FoodState == "true") Food.setChecked(true);
                     else Food.setChecked(false);
-                    if(MusicState=="true") Music.setChecked(true);
+                    if (MusicState == "true") Music.setChecked(true);
                     else Music.setChecked(false);
-                    if(PhotoState=="true") Photo.setChecked(true);
+                    if (PhotoState == "true") Photo.setChecked(true);
                     else Photo.setChecked(false);
-                    if(SportState=="true") Sport.setChecked(true);
+                    if (SportState == "true") Sport.setChecked(true);
                     else Sport.setChecked(false);
                     UserName.setText(username);
                     FullName.setText(fullname);
+
+                    if (snapshot.hasChild("profileimage")) {
+                        String image = snapshot.child("profileimage").getValue().toString();
+                        Log.d("tag", image);
+                        Picasso.get().load(image).placeholder(R.drawable.profile).into(ProfileImage);
+                    } else {
+                        Toast.makeText(SettingsActivity.this, "Please select profile image ", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
 
@@ -138,12 +133,9 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
-
-
         changeProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 Intent galleryIntent = new Intent();
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
@@ -152,32 +144,13 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
-        UsersRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if(dataSnapshot.exists())
-                {
-                    if (dataSnapshot.hasChild("profileimage"))
-                    {
-                        String image = dataSnapshot.child("profileimage").getValue().toString();
-                        Log.d("tag",image);
-                        Picasso.get().load(image).placeholder(R.drawable.profile).into(ProfileImage);
-                    }
-                    else
-                    {
-                        Toast.makeText(SettingsActivity.this, "Please select profile image first.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
 
+        SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onClick(View view) {
+                SaveAccountSetupInformation();
             }
         });
-
-
 
         Logout = (Button) findViewById(R.id.button3);
         Logout.setOnClickListener(new View.OnClickListener() {
@@ -193,8 +166,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==Gallery_Pick && resultCode==RESULT_OK && data!=null)
-        {
+        if (requestCode == Gallery_Pick && resultCode == RESULT_OK && data != null) {
             Uri ImageUri = data.getData();
 
             CropImage.activity()
@@ -202,7 +174,7 @@ public class SettingsActivity extends AppCompatActivity {
                     .setAspectRatio(1, 1)
                     .start(this);
         }
-        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             loadingBar.setTitle("Profile Image");
             loadingBar.setMessage("Please wait, while we updating your profile image...");
@@ -230,8 +202,7 @@ public class SettingsActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Intent selfIntent = new Intent(SettingsActivity.this, SetupActivity.class);
-                                                startActivity(selfIntent);
+
 
                                                 Toast.makeText(SettingsActivity.this, "Profile Image stored to Firebase Database Successfully...", Toast.LENGTH_SHORT).show();
                                                 loadingBar.dismiss();
@@ -254,8 +225,9 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
+
+
     private void SendUserToLoginActivity()
     {
         Intent loginIntent = new Intent(SettingsActivity.this, MainActivity.class);
@@ -327,7 +299,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void SendUserToProfileActivity() {
-        Intent loginIntent = new Intent(SettingsActivity.this, Profile.class);
+        Intent loginIntent = new Intent(SettingsActivity.this, MainActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
         finish();

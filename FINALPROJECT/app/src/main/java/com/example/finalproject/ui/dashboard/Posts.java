@@ -8,11 +8,12 @@ public class Posts {
     public String description;
     public String post_image;
     public String profile_image;
+    public String tag;
 
     public Posts(){
 
     }
-    public Posts(String uid, String date, String time, String username, String description, String post_image, String profile_image) {
+    public Posts(String uid, String tag, String date, String time, String username, String description, String post_image, String profile_image) {
         this.uid = uid;
         this.date = date;
         this.time = time;
@@ -20,6 +21,7 @@ public class Posts {
         this.description = description;
         this.post_image = post_image;
         this.profile_image = profile_image;
+        this.tag = tag;
     }
 
     public String getUid() {

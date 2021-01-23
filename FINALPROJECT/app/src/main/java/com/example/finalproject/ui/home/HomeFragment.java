@@ -135,8 +135,5 @@ public class HomeFragment extends Fragment {
           this.tag= tag;
         }
     }
-    public void GoToINFO() {
-        Intent registerIntent = new Intent(getActivity(), NewPostActivity.class);//tu nie wiem jak do settingsów go przekierować
-        startActivity(registerIntent);
-    }
+
 }

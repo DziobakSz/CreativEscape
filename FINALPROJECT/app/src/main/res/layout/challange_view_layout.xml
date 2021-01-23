@@ -19,17 +19,6 @@
         android:background="#DB99FF"
         >
 
-        <EditText
-            android:id="@+id/editTextTextPersonName2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:gravity="center"
-            android:inputType="textPersonName"
-            android:text="Daily challenge"
-            android:textColor="#7534D1"
-            android:textSize="30sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,11 +70,8 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
-
         </LinearLayout>
 
-
     </LinearLayout>
-
 
 </RelativeLayout>

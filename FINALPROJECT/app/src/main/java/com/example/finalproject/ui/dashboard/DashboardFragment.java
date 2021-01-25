@@ -1,19 +1,23 @@
 package com.example.finalproject.ui.dashboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalproject.R;
+import com.example.finalproject.friends.FindFriends;
+import com.example.finalproject.PersonProfileActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -21,17 +25,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class DashboardFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
     private RecyclerView postList;
-    private DatabaseReference PostsRef;
+    private ImageButton SearchButton;
+    private DatabaseReference PostsRef,allUsersDatabaseRef;
+    private EditText SearchInputText;
+    private RecyclerView SearchResultList;
     private  FirebaseRecyclerAdapter<Posts, DashboardFragment.PostsViewHolder> mFirebaseAdapter;
+    boolean listOpened = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         postList = (RecyclerView) root.findViewById(R.id.all_users_post_list);
@@ -42,18 +49,112 @@ public class DashboardFragment extends Fragment {
         postList.setLayoutManager(linearLayoutManager);
 
         PostsRef = FirebaseDatabase.getInstance().getReference();
+        allUsersDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        SearchResultList = (RecyclerView) root.findViewById(R.id.search_result_list);
+        SearchResultList.setLayoutManager(new LinearLayoutManager(root.getContext()));
+
+        SearchButton = (ImageButton) root.findViewById(R.id.search_people_friends_button);
+        SearchInputText = (EditText) root.findViewById(R.id.search_box_input);
 
         DisplayAllUsersPosts();
 
-       /*final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        SearchButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onClick(View v)
+            {
+                if(listOpened){
+                SearchResultList.setVisibility(View.VISIBLE);
+                    postList.setVisibility(View.INVISIBLE);
+                String searchBoxInput = SearchInputText.getText().toString();
+                SearchPeopleAndFriends(searchBoxInput);}
+                else{
+                    postList.setVisibility(View.VISIBLE);
+                    SearchResultList.setVisibility(View.INVISIBLE);
+                }
+                listOpened=!listOpened;
+
+
             }
-        });*/
+        });
+
 
         return root;
+    }
+
+    private void SearchPeopleAndFriends(String searchBoxInput) {
+        //Toast.makeText(this, "Searching....", Toast.LENGTH_LONG).show();
+
+        Query searchPeopleAndFriendsQuery = allUsersDatabaseRef.orderByChild("fullname")
+                .startAt(searchBoxInput).endAt(searchBoxInput + "\uf8ff");
+
+        FirebaseRecyclerOptions<FindFriends> options=new FirebaseRecyclerOptions.Builder<FindFriends>().
+                setQuery(searchPeopleAndFriendsQuery, FindFriends.class).build(); //query build past the query to FirebaseRecyclerAdapter
+        FirebaseRecyclerAdapter<FindFriends, DashboardFragment.FindFriendViewHolder> adapter=new FirebaseRecyclerAdapter<FindFriends,  DashboardFragment.FindFriendViewHolder>(options)
+        {
+            @Override
+            protected void onBindViewHolder(@NonNull  DashboardFragment.FindFriendViewHolder holder, final int position, @NonNull FindFriends model)
+            {
+                final String PostKey = getRef(position).getKey();
+                holder.username.setText(model.getFullname());
+                holder.status.setText(model.getStatus());
+
+                Picasso.get().load(model.getProfileimage()).into(holder.profileimage);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent findOthersIntent = new Intent(v.getContext(), DashboardFragment.class);
+                        findOthersIntent.putExtra("PostKey", PostKey);
+                        startActivity(findOthersIntent);
+                    }
+                });
+
+                holder.itemView.setOnClickListener(new View.OnClickListener()
+                {
+
+                    @Override
+                    public void onClick(View v)
+                    {
+                        String visit_user_id = getRef(position).getKey();
+
+                        Intent profileIntent = new Intent(v.getContext(), PersonProfileActivity.class);
+                        profileIntent.putExtra("visit_user_id", visit_user_id);
+                        startActivity(profileIntent);
+                    }
+                });
+            }
+            @NonNull
+            @Override
+            public  DashboardFragment.FindFriendViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
+            {
+                View view= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.all_users_display_layout,viewGroup,false);
+
+                DashboardFragment.FindFriendViewHolder viewHolder=new  DashboardFragment.FindFriendViewHolder(view);
+                return viewHolder;
+            }
+        };
+
+        SearchResultList.setAdapter(adapter);
+        adapter.startListening();
+    }
+
+
+    public class FindFriendViewHolder extends RecyclerView.ViewHolder
+    {
+        TextView username, status;
+        CircleImageView profileimage;
+        View mView;
+
+        public FindFriendViewHolder(@NonNull View itemView)
+        {
+            super(itemView);
+            username = itemView.findViewById(R.id.all_users_profile_full_name);
+            status = itemView.findViewById(R.id.all_users_status);
+            profileimage = itemView.findViewById(R.id.all_users_profile_image);
+        }
     }
 
     //tu jest z tutorialu z internetu więc jak się będzie rozwalać to przez to

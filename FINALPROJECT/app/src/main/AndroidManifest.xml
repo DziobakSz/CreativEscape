@@ -13,12 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FINALPROJECT">
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".PersonProfileActivity"></activity>
+        <activity android:name=".SettingsActivity" />
         <activity android:name=".ChallangeInfoActivity" />
         <activity android:name=".NewPostActivity" />
         <activity
             android:name=".MenuActivity"
-            android:label="@string/title_activity_menu"></activity>
+            android:label="@string/title_activity_menu" />
         <activity android:name=".login.SetupActivity" />
         <activity android:name=".login.RegisterActivity" />
         <activity android:name=".login.FirstActivity" />

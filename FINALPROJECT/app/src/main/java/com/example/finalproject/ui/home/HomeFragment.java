@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,14 +18,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalproject.ChallangeInfoActivity;
-import com.example.finalproject.NewPostActivity;
 import com.example.finalproject.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 public class HomeFragment extends Fragment {
@@ -35,6 +39,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView challangeList;
     private DatabaseReference UsersRef, ChalRef;
     private FirebaseRecyclerAdapter<Challange, ChallangeViewHolder> mFirebaseAdapter;
+    TextView DayTitle;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -46,16 +51,32 @@ public class HomeFragment extends Fragment {
 
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         ChalRef = FirebaseDatabase.getInstance().getReference().child("Challanges");
-        challangeList = (RecyclerView) root.findViewById(R.id.challange_list);
+        challangeList = (RecyclerView) root.findViewById(R.id.challange_list_DAY);
         challangeList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext());
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         challangeList.setLayoutManager(linearLayoutManager);
+        DayTitle = root.findViewById(R.id.title_text_DAY);
 
+Query queryDAY = (Query) ChalRef.orderByChild("of_the_day").endAt(1).limitToFirst(1);
+        queryDAY.addValueEventListener(new ValueEventListener() {
+    @Override
+    public void onDataChange(@NonNull DataSnapshot snapshot) {
+        if(snapshot.exists()){
 
+            String myUserName = snapshot.getValue(Challange.class).toString();
 
+            // Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userImage);
+            Log.d("tag",myUserName);
+        }
+    }
 
+    @Override
+    public void onCancelled(@NonNull DatabaseError error) {
+
+    }
+});
 
         Query query = ChalRef; // Ph4 Reading chat
         FirebaseRecyclerOptions<Challange> options = new FirebaseRecyclerOptions.Builder<Challange>() //ph4
@@ -69,6 +90,7 @@ public class HomeFragment extends Fragment {
                 holder.setFullname(model.getTitle());
                 holder.setPostimage( model.getPhoto());
                 holder.setID(model.getUid());
+                holder.setTag(model.getTag());
 
 
             }
@@ -129,6 +151,12 @@ public class HomeFragment extends Fragment {
         public void setPostimage( String postimage) {
             ImageView PostImage = (ImageView) mView.findViewById(R.id.image_challange);
             Picasso.get().load(postimage).fit().into(PostImage);
+
+        }
+
+        public void setTag( String TAG) {
+            TextView username = (TextView) mView.findViewById(R.id.tagText);
+            username.setText(TAG);
 
         }
         public void setID( String tag) {

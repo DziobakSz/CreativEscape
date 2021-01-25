@@ -2,6 +2,7 @@ package com.example.finalproject.ui.dashboard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalproject.R;
 import com.example.finalproject.friends.FindFriends;
-import com.example.finalproject.PersonProfileActivity;
+import com.example.finalproject.friends.PersonProfileActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -119,7 +120,7 @@ public class DashboardFragment extends Fragment {
                     public void onClick(View v)
                     {
                         String visit_user_id = getRef(position).getKey();
-
+Log.d("user_id",visit_user_id);
                         Intent profileIntent = new Intent(v.getContext(), PersonProfileActivity.class);
                         profileIntent.putExtra("visit_user_id", visit_user_id);
                         startActivity(profileIntent);

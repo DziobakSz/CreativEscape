@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.finalproject.FriendsActivity;
 import com.example.finalproject.NewPostActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.SettingsActivity;
@@ -43,6 +44,7 @@ public class Profile extends Fragment {
     private CircleImageView userImage;
     private String currentUserID;
     private ImageButton profileSettings;
+    private Button Friends;
 
 
     public static Profile newInstance() {
@@ -58,6 +60,14 @@ public class Profile extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         ProfRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
+        Friends = (Button) root.findViewById(R.id.friends_button);
+        Friends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent rIntent = new Intent(getActivity(), FriendsActivity.class);
+                startActivity(rIntent);
+            }
+        });
         profileSettings = (ImageButton) root.findViewById(R.id.profileSettingsBtn);
         profileSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,11 +85,14 @@ public class Profile extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
               if(snapshot.exists()){
-                 // String myProfileImage = snapshot.child("profileimage").getValue().toString(); //tu nie wiem pod jakim hasłem to jest w bazie
+                  if(snapshot.child("profileimage" ).exists()){
+                  String myProfileImage = snapshot.child("profileimage").getValue().toString();
+                  Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userImage);
+                  }
                   String myUserName = snapshot.child("username").getValue().toString();
                   String myFullName = snapshot.child("fullname").getValue().toString();
 
-                 // Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userImage);
+
                   userName.setText(myUserName);
                   fullName.setText(myFullName);
               }

@@ -39,7 +39,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView challangeList;
     private DatabaseReference UsersRef, ChalRef;
     private FirebaseRecyclerAdapter<Challange, ChallangeViewHolder> mFirebaseAdapter;
-    TextView DayTitle;
+    TextView DayTitle,DayTag;
+    ImageView DayImage;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,17 +59,17 @@ public class HomeFragment extends Fragment {
         linearLayoutManager.setStackFromEnd(true);
         challangeList.setLayoutManager(linearLayoutManager);
         DayTitle = root.findViewById(R.id.title_text_DAY);
+        DayImage = root.findViewById(R.id.image_challange_DAY);
 
-Query queryDAY = (Query) ChalRef.orderByChild("of_the_day").endAt(1).limitToFirst(1);
+Query queryDAY = (Query) ChalRef.child("C101").orderByChild("of_the_day");
         queryDAY.addValueEventListener(new ValueEventListener() {
     @Override
     public void onDataChange(@NonNull DataSnapshot snapshot) {
         if(snapshot.exists()){
 
-            String myUserName = snapshot.getValue(Challange.class).toString();
-
-            // Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userImage);
-            Log.d("tag",myUserName);
+            Challange chal = snapshot.getValue(Challange.class);
+             DayTitle.setText(chal.getTitle());
+            Picasso.get().load(chal.getPhoto()).placeholder(R.drawable.profile).into(DayImage);
         }
     }
 

@@ -9,11 +9,28 @@ public class Posts {
     public String post_image;
     public String profile_image;
     public String tag;
+    public int counter;
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 
     public Posts(){
 
     }
-    public Posts(String uid, String tag, String date, String time, String username, String description, String post_image, String profile_image) {
+    public Posts(String uid, String tag, String date, String time, String username, String description, String post_image, String profile_image,int counter) {
         this.uid = uid;
         this.date = date;
         this.time = time;
@@ -22,6 +39,7 @@ public class Posts {
         this.post_image = post_image;
         this.profile_image = profile_image;
         this.tag = tag;
+        this.counter=counter;
     }
 
     public String getUid() {

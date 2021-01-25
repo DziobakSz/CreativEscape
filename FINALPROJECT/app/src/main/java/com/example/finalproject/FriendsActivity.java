@@ -113,7 +113,7 @@ public class FriendsActivity extends AppCompatActivity {
                             final String userName = dataSnapshot.child("fullname").getValue().toString();
                             final String profileImage = dataSnapshot.child("profileimage").getValue().toString();
                             final String type;
-                            
+
 
                             holder.setFullname(userName);
                             holder.setProfileimage(profileImage);

@@ -21,9 +21,13 @@ import com.example.finalproject.friends.FindFriends;
 import com.example.finalproject.friends.PersonProfileActivity;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -32,11 +36,14 @@ public class DashboardFragment extends Fragment {
 
     private RecyclerView postList;
     private ImageButton SearchButton;
-    private DatabaseReference PostsRef,allUsersDatabaseRef;
+    private DatabaseReference PostsRef,allUsersDatabaseRef,LikesRef;
     private EditText SearchInputText;
     private RecyclerView SearchResultList;
     private  FirebaseRecyclerAdapter<Posts, DashboardFragment.PostsViewHolder> mFirebaseAdapter;
+    private FirebaseAuth mAuth;
+    Boolean LikeChecker = false;
     boolean listOpened = false;
+    String currentUserID;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,7 +55,10 @@ public class DashboardFragment extends Fragment {
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         postList.setLayoutManager(linearLayoutManager);
+        LikesRef = FirebaseDatabase.getInstance().getReference().child("Likes");
 
+        mAuth = FirebaseAuth.getInstance();
+        currentUserID = mAuth.getCurrentUser().getUid();
         PostsRef = FirebaseDatabase.getInstance().getReference();
         allUsersDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Users");
         SearchResultList = (RecyclerView) root.findViewById(R.id.search_result_list);
@@ -182,59 +192,123 @@ Log.d("user_id",visit_user_id);
 
                     @Override
                     protected void onBindViewHolder(@NonNull PostsViewHolder  viewHolder, int position, @NonNull Posts model) {
+                        final String PostKey = getRef(position).getKey();
                         viewHolder.setFullname(model.getUsername());
                         viewHolder.setTime(model.getTime());
                         viewHolder.setDate(model.getDate());
                         viewHolder.setDescription(model.getDescription());
                         viewHolder.setPostimage( model.getPost_image());
                         viewHolder.setProfileImage(model.getProfile_image());
+                        viewHolder.setLikeButtonStatus(PostKey);
+                        viewHolder.LikepostButton.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                LikeChecker = true;
+
+                                LikesRef.addValueEventListener(new ValueEventListener()
+                                {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                                    {
+                                        if(LikeChecker.equals(true))
+                                        {
+                                            if(dataSnapshot.child(PostKey).hasChild(currentUserID))
+                                            {
+                                                LikesRef.child(PostKey).child(currentUserID).removeValue();
+                                                LikeChecker = false;
+                                            }
+                                            else
+                                            {
+                                                LikesRef.child(PostKey).child(currentUserID).setValue(true);
+                                                LikeChecker = false;
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError)
+                                    {
+
+                                    }
+                                });
+                            }
+                        });
                     }
 
                 };
         postList.setAdapter( mFirebaseAdapter);
     }
 
-    public static class PostsViewHolder extends RecyclerView.ViewHolder{
-
+    public static class PostsViewHolder extends RecyclerView.ViewHolder {
+        ImageButton LikepostButton;
         View mView;
+        int countLikes;
+        String currentUserId;
+        DatabaseReference LikesRef;
+        TextView DisplayNoOfLikes;
+
         public PostsViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
+            LikepostButton = (ImageButton) mView.findViewById(R.id.like_button);
+            LikesRef = FirebaseDatabase.getInstance().getReference().child("Likes");
+            currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DisplayNoOfLikes = (TextView) mView.findViewById(R.id.display_no_of_likes);
         }
 
-        public void setFullname(String fullname)
-        {
+        public void setFullname(String fullname) {
             TextView username = (TextView) mView.findViewById(R.id.my_profile_user_name);
             username.setText(fullname);
         }
 
 
-        public void setTime(String time)
-        {
+        public void setTime(String time) {
             TextView PostTime = (TextView) mView.findViewById(R.id.post_time);
             PostTime.setText("    " + time);
         }
 
-        public void setDate(String date)
-        {
+        public void setDate(String date) {
             TextView PostDate = (TextView) mView.findViewById(R.id.post_date);
             PostDate.setText("    " + date);
         }
 
-        public void setDescription(String description)
-        {
+        public void setDescription(String description) {
             TextView PostDescription = (TextView) mView.findViewById(R.id.post_content);
             PostDescription.setText(description);
         }
 
-        public void setPostimage(  String postimage)
-        {
+        public void setPostimage(String postimage) {
             ImageView PostImage = (ImageView) mView.findViewById(R.id.post_image);
             Picasso.get().load(postimage).fit().into(PostImage);
         }
-        public void setProfileImage (String profileImage){
+
+        public void setProfileImage(String profileImage) {
             ImageView ProfileImage = (ImageView) mView.findViewById(R.id.prof_image);
             Picasso.get().load(profileImage).fit().into(ProfileImage);
+        }
+
+        public void setLikeButtonStatus(final String PostKey) {
+            LikesRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.child(PostKey).hasChild(currentUserId)) {
+                        countLikes = (int) dataSnapshot.child(PostKey).getChildrenCount();
+                        LikepostButton.setImageResource(R.drawable.heart);
+                        DisplayNoOfLikes.setText((Integer.toString(countLikes) + (" Likes")));
+                    } else {
+                        countLikes = (int) dataSnapshot.child(PostKey).getChildrenCount();
+                        LikepostButton.setImageResource(R.drawable.heartb);
+                        DisplayNoOfLikes.setText((Integer.toString(countLikes) + (" Likes")));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
@@ -249,4 +323,5 @@ Log.d("user_id",visit_user_id);
         super.onStop();
         mFirebaseAdapter.stopListening();
     }
+
 }

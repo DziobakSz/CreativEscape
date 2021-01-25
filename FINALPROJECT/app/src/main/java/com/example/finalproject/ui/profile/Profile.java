@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.finalproject.FriendsActivity;
+import com.example.finalproject.MyPostsActivity;
 import com.example.finalproject.NewPostActivity;
 import com.example.finalproject.R;
 import com.example.finalproject.SettingsActivity;
@@ -44,7 +45,7 @@ public class Profile extends Fragment {
     private CircleImageView userImage;
     private String currentUserID;
     private ImageButton profileSettings;
-    private Button Friends;
+    private Button Friends ,Posts;
 
 
     public static Profile newInstance() {
@@ -65,6 +66,14 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent rIntent = new Intent(getActivity(), FriendsActivity.class);
+                startActivity(rIntent);
+            }
+        });
+        Posts = (Button) root.findViewById(R.id.my_posts);
+        Posts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent rIntent = new Intent(getActivity(), MyPostsActivity.class);
                 startActivity(rIntent);
             }
         });

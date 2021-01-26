@@ -13,6 +13,7 @@
         android:orientation="vertical"
         android:background="@drawable/post_background"
         android:padding="10dp"
+        android:layout_marginEnd="20dp"
         >
 
         <LinearLayout
@@ -29,6 +30,8 @@
                 android:layout_weight="90"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="#000000"
+                android:gravity="center"
+                android:padding="12dp"
                 android:background="@drawable/post_background"
                 android:textSize="30sp"
                 android:textStyle="bold" />
@@ -43,48 +46,58 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16sp"
-                android:layout_marginRight="4dp"
-                android:src="@drawable/man" />
-
-            <TextView
+                android:id="@+id/Sport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="6dp"
-                android:text="5"
-                android:textColor="#000000"
-                android:textSize="14sp" />
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:src="@drawable/dumbbell"
+                android:visibility="invisible"/>
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16sp"
-                android:layout_marginRight="4dp"
-                android:src="@drawable/man" />
-
-            <TextView
+                android:id="@+id/DIY"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="6dp"
-
-                android:text="4"
-                android:textColor="#000000"
-                android:textSize="14sp" />
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:src="@drawable/craft"
+                android:visibility="invisible"/>
 
             <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16sp"
-                android:layout_marginRight="4dp"
-                android:src="@drawable/man" />
-
-            <TextView
+                android:id="@+id/Food"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:src="@drawable/chef"
+                android:visibility="invisible"/>
 
-                android:text="3"
-                android:textColor="#000000"
-                android:textSize="14sp" />
+            <ImageView
+                android:id="@+id/Music"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:src="@drawable/musicnote"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/Photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:src="@drawable/camera"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/Book"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:src="@drawable/openbook"
+                android:visibility="invisible"/>
 
         </LinearLayout>
 
@@ -117,7 +130,7 @@
                 android:layout_height="40dp"
 
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="34dp"
+                android:layout_marginEnd="40dp"
                 android:background="@color/morange"
                 android:src="@android:drawable/ic_media_play" />
         </RelativeLayout>

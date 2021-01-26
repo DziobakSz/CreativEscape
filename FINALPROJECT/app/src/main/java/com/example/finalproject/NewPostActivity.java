@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -47,8 +48,9 @@ public class NewPostActivity extends AppCompatActivity {
     private String Description;
     private DatabaseReference UsersRef, PostsRef;
     private FirebaseAuth mAuth;
-
+int counter;
     private StorageReference PostsImagesReference;
+    boolean once=true;
 
     private String saveCurrentDate, saveCurrentTime, postRandomName, downloadUrl, current_user_id,tag;
     private long countPosts = 0;
@@ -121,6 +123,7 @@ public class NewPostActivity extends AppCompatActivity {
 
     private void StoringImageToFirebaseStorage()
     {
+
         Calendar calFordDate = Calendar.getInstance();
         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy");
         saveCurrentDate = currentDate.format(calFordDate.getTime());
@@ -175,6 +178,8 @@ public class NewPostActivity extends AppCompatActivity {
                 if(dataSnapshot.exists())
                 {
                     countPosts = dataSnapshot.getChildrenCount();
+
+
                 }
                 else
                 {
@@ -198,6 +203,9 @@ public class NewPostActivity extends AppCompatActivity {
                 {
                     final String userFullName = dataSnapshot.child("username").getValue().toString();
                     final String userProfileImage = dataSnapshot.child("profileimage").getValue().toString();
+                     counter = Integer.parseInt(dataSnapshot.child("counter").getValue().toString());
+                     Log.d("tag",String.valueOf(counter));
+
 
                     HashMap postsMap = new HashMap();
                     postsMap.put("uid", current_user_id);
@@ -209,6 +217,8 @@ public class NewPostActivity extends AppCompatActivity {
                     postsMap.put("username", userFullName);
                     postsMap.put("tag", tag);
                     postsMap.put("counter", countPosts);
+
+
                     PostsRef.child(current_user_id + postRandomName).updateChildren(postsMap)
                             .addOnCompleteListener(new OnCompleteListener()
                             {
@@ -217,9 +227,14 @@ public class NewPostActivity extends AppCompatActivity {
                                 {
                                     if(task.isSuccessful())
                                     {
+
                                         SendUserToMainActivity();
                                         Toast.makeText(NewPostActivity.this, "New Post is updated successfully", Toast.LENGTH_SHORT).show();
                                         loadingBar.dismiss();
+                                        if(once){
+                                        Log.d("tagi",String.valueOf(counter));
+                                        UsersRef.child(current_user_id).child("counter").setValue(counter+1);
+                                        once=false;}
                                     }
                                     else
                                     {
@@ -237,6 +252,7 @@ public class NewPostActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void OpenGallery()
@@ -256,6 +272,7 @@ public class NewPostActivity extends AppCompatActivity {
         {
             ImageUri = data.getData();
             SelectPostImage.setImageURI(ImageUri);
+
         }
         else
         {
@@ -267,6 +284,7 @@ public class NewPostActivity extends AppCompatActivity {
 
     private void SendUserToMainActivity()
     {
+
         Intent mainIntent = new Intent(NewPostActivity.this, MenuActivity.class);
         startActivity(mainIntent);
     }

@@ -23,7 +23,7 @@
                 android:layout_height="300dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="40dp"
                 android:src="@drawable/profile"/>
 
             <TextView
@@ -62,65 +62,17 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="22sp" />
 
-            <TextView
-                android:id="@+id/person_country"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Country"
-                android:layout_below="@+id/person_profile_status"
-                android:layout_marginTop="30dp"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/mblue"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/person_dob"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Date of Birth"
-                android:layout_below="@+id/person_country"
-                android:layout_marginTop="2dp"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/mblue"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/person_gender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Gender"
-                android:layout_below="@+id/person_dob"
-                android:layout_marginTop="2dp"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/mblue"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/person_relationship_status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Relationship status"
-                android:layout_below="@+id/person_gender"
-                android:layout_marginTop="2dp"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/mblue"
-                android:textSize="18sp" />
-
             <Button
                 android:id="@+id/person_send_friend_request_btn"
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/person_relationship_status"
-                android:layout_marginTop="45dp"
+                android:layout_centerHorizontal="true"
                 android:background="@color/morange"
                 android:text="Send Friend Request"
                 android:textColor="@android:color/background_light"
                 android:textSize="16sp"
-                android:layout_centerHorizontal="true"/>
+                android:layout_marginTop="40dp"
+                android:layout_below="@+id/person_profile_status"/>
 
             <Button
                 android:id="@+id/person_decline_friend_request"

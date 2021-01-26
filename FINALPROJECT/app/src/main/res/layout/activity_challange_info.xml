@@ -4,40 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChallangeInfoActivity">
+    tools:context=".ChallangeInfoActivity"
+    android:background="@drawable/back1">
+
+    <TextView
+        android:id="@+id/challenge_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textAllCaps="true"
+        android:textColor="@color/mpurple"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:text="TextView"
+        android:background="@drawable/post_background"/>
+    <TextView
+        android:id="@+id/challenge_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        android:text="TextView"
+        android:background="@drawable/white_background"/>
 
     <view
         android:id="@+id/youtube_view"
         class="com.google.android.youtube.player.YouTubePlayerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/challenge_description" />
+        android:layout_height="400dp"
+        android:layout_below="@+id/challenge_description"
+        android:layout_marginTop="39dp" />
 
-    <TextView
-        android:id="@+id/challenge_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/play_button"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="20dp"
-        android:text="TextView" />
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+        android:layout_below="@+id/youtube_view"
+    >
+        <Button
+            android:id="@+id/play_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="70dp"
+            android:text="Play tutorial"
+           />
 
     <Button
         android:id="@+id/done_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/play_button"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="13dp"
-        android:gravity="right"
+
+        android:layout_marginStart="30dp"
         android:text="Finish" />
 
-    <Button
-        android:id="@+id/play_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_centerVertical="true"
-        android:text="Play tutorial" />
+
+</LinearLayout>
 
 </RelativeLayout>

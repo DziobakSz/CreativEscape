@@ -28,7 +28,7 @@ public class ChallangeInfoActivity extends YouTubeBaseActivity {
     public Button Finish;
     private DatabaseReference ChelRef;
     private YouTubePlayerView youTubePlayer;
-    private TextView  Desc;
+    private TextView  Desc,Title;
     private String video_adress, tag;
     private Button playButton;
 
@@ -56,6 +56,7 @@ public class ChallangeInfoActivity extends YouTubeBaseActivity {
             }
         });
         Desc = (TextView) findViewById(R.id.challenge_description);
+        Title = (TextView) findViewById(R.id.challenge_title);
         GetChallange();
 
     }
@@ -65,10 +66,12 @@ public class ChallangeInfoActivity extends YouTubeBaseActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    String description = snapshot.child("description").getValue().toString(); //tu nie wiem pod jakim hasłem to jest w bazie
+                    String description = snapshot.child("description").getValue().toString();
+                    String title = snapshot.child("title").getValue().toString();//tu nie wiem pod jakim hasłem to jest w bazie
                      video_adress = snapshot.child("video_address").getValue().toString();
                       tag=snapshot.child("tag").getValue().toString();
                      Desc.setText(description);
+                     Title.setText(title);
 
                 }
             }

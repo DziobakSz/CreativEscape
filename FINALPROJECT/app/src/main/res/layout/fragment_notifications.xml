@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:isScrollContainer="false"
     android:orientation="vertical"
-    tools:context=".ui.notifications.NotificationsFragment">
+    tools:context=".ui.notifications.NotificationsFragment"
+    android:layout_marginStart="40dp"
+    android:layout_marginEnd="40dp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,17 +26,31 @@
                 android:layout_marginTop="100dp"
                 android:paddingLeft="7dp"
                 android:text="PL"
+                android:gravity="center"
+                android:textStyle="bold"
                 android:textColor="@color/morange"
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/opisPL"
+                android:id="@+id/opisPLpart1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="TextView"
+                android:background="@drawable/post_background"
                 android:textColor="@color/mpurple"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:padding="14dp"/>
+            <TextView
+                android:id="@+id/opisPLpart2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="TextView"
+                android:background="@drawable/post_background"
+                android:textColor="@color/mpurple"
+                android:textSize="20sp"
+                android:padding="14dp"/>
 
             <TextView
                 android:id="@+id/numbers"
@@ -42,8 +58,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="TextView"
+                android:textStyle="bold"
+                android:padding="14dp"
+
                 android:textColor="@color/mpink"
-                android:textSize="20sp" />
+                android:textSize="26sp" />
 
             <TextView
                 android:id="@+id/EN"
@@ -51,9 +70,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:paddingLeft="7dp"
-                android:text="EN"
+
+                android:text="PL"
+                android:gravity="center"
+                android:textStyle="bold"
                 android:textColor="@color/morange"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                />
 
             <TextView
                 android:id="@+id/opisEN"
@@ -61,9 +84,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="100dp"
+                android:padding="14dp"
                 android:text="TextView"
                 android:textColor="@color/mpurple"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:background="@drawable/post_background"/>
 
         </LinearLayout>
     </ScrollView>

@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
+    android:layout_height="match_parent"
+    android:background="@drawable/back4">
 
 
     <ImageButton
         android:id="@+id/select_post_image"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_width="386dp"
+        android:layout_height="298dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginBottom="346dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginBottom="312dp"
+        android:layout_gravity="center"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/select_image" />
 
@@ -25,9 +25,10 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="9dp"
+        android:layout_marginStart="3dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="259dp"
+        android:layout_marginBottom="230dp"
+        android:layout_gravity="center"
 
         android:ems="10"
         android:hint="Write something about your image here..."
@@ -42,6 +43,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="104dp"
         android:layout_marginBottom="153dp"
+        android:layout_gravity="center"
 
         android:text="Update Post"
         android:textColor="@android:color/white"

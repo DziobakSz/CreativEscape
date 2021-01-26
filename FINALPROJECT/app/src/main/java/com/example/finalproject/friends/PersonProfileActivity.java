@@ -356,10 +356,7 @@ public class PersonProfileActivity extends AppCompatActivity {
         userName = (TextView) findViewById(R.id.person_username);
         userProfName = (TextView) findViewById(R.id.person_full_name);
         userStatus = (TextView) findViewById(R.id.person_profile_status);
-        userCountry = (TextView) findViewById(R.id.person_country);
-        userGender = (TextView) findViewById(R.id.person_gender);
-        userRelation = (TextView) findViewById(R.id.person_relationship_status);
-        userDOB = (TextView) findViewById(R.id.person_dob);
+
         userProfileImage = (CircleImageView) findViewById(R.id.person_profile_pic);
         SendFriendReqButton = (Button) findViewById(R.id.person_send_friend_request_btn);
         DeclineFriendRequestButton = (Button) findViewById(R.id.person_decline_friend_request);

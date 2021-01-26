@@ -108,7 +108,6 @@ public class DashboardFragment extends Fragment {
             {
                 final String PostKey = getRef(position).getKey();
                 holder.username.setText(model.getFullname());
-                holder.status.setText(model.getStatus());
 
                 Picasso.get().load(model.getProfileimage()).into(holder.profileimage);
 
@@ -163,7 +162,7 @@ Log.d("user_id",visit_user_id);
         {
             super(itemView);
             username = itemView.findViewById(R.id.all_users_profile_full_name);
-            status = itemView.findViewById(R.id.all_users_status);
+
             profileimage = itemView.findViewById(R.id.all_users_profile_image);
         }
     }

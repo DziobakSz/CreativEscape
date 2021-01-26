@@ -2,6 +2,7 @@ package com.example.finalproject.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,8 +43,8 @@ public class HomeFragment extends Fragment {
     private FirebaseRecyclerAdapter<Challange, ChallangeViewHolder> mFirebaseAdapter;
     TextView DayTitle,DayTag;
     ImageView DayImage;
-
-
+ImageButton Bookb, DIYb, Foodb, Musicb, Photob,Sportb;
+String category = "all";
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -58,28 +60,75 @@ public class HomeFragment extends Fragment {
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         challangeList.setLayoutManager(linearLayoutManager);
-        DayTitle = root.findViewById(R.id.title_text_DAY);
-        DayImage = root.findViewById(R.id.image_challange_DAY);
 
-Query queryDAY = (Query) ChalRef.child("C101").orderByChild("of_the_day");
-        queryDAY.addValueEventListener(new ValueEventListener() {
-    @Override
-    public void onDataChange(@NonNull DataSnapshot snapshot) {
-        if(snapshot.exists()){
+        Bookb = root.findViewById(R.id.Bookb);
+        Bookb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                category = "Book";
+                Refresh();
+            }
+        });
 
-            Challange chal = snapshot.getValue(Challange.class);
-             DayTitle.setText(chal.getTitle());
-            Picasso.get().load(chal.getPhoto()).placeholder(R.drawable.profile).into(DayImage);
-        }
+        DIYb = root.findViewById(R.id.DIYb);
+        DIYb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                category = "DIY";
+                Refresh();
+            }
+        });
+
+        Foodb = root.findViewById(R.id.Foodb);
+        Foodb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                category = "Food";
+                Refresh();
+            }
+        });
+
+        Musicb = root.findViewById(R.id.Musicb);
+        Musicb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                category = "Music";
+                Refresh();
+            }
+        });
+
+        Photob = root.findViewById(R.id.Photob);
+        Photob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                category = "Photo";
+                Refresh();
+            }
+        });
+
+        Sportb = root.findViewById(R.id.Sportb);
+        Sportb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                category = "Sport";
+
+                Refresh();
+
+            }
+        });
+        DisplayChallanges();
+        return root;
     }
 
-    @Override
-    public void onCancelled(@NonNull DatabaseError error) {
-
+    public void Refresh() {
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
-});
+   public void DisplayChallanges(){
+        Query query = ChalRef.orderByChild("category");
 
-        Query query = ChalRef; // Ph4 Reading chat
+          if(category!="all")
+            query = ChalRef.orderByChild("category").equalTo(category); // Ph4 Reading chat}
+
         FirebaseRecyclerOptions<Challange> options = new FirebaseRecyclerOptions.Builder<Challange>() //ph4
                 .setQuery(query, Challange.class)
                 .build();
@@ -92,6 +141,9 @@ Query queryDAY = (Query) ChalRef.child("C101").orderByChild("of_the_day");
                 holder.setPostimage( model.getPhoto());
                 holder.setID(model.getUid());
                 holder.setTag(model.getTag());
+                String cat = model.getCategory();
+                holder.setCategory(cat);
+
 
 
             }
@@ -106,7 +158,7 @@ Query queryDAY = (Query) ChalRef.child("C101").orderByChild("of_the_day");
 
         };
         challangeList.setAdapter( mFirebaseAdapter);
-        return root;
+
     }
 
     @Override
@@ -125,6 +177,7 @@ Query queryDAY = (Query) ChalRef.child("C101").orderByChild("of_the_day");
         View mView;
         private Context context;
         String tag;
+        ImageView  Book, DIY, Food, Music, Photo,Sport;
 
         public ChallangeViewHolder(View itemView) {
             super(itemView);
@@ -163,6 +216,36 @@ Query queryDAY = (Query) ChalRef.child("C101").orderByChild("of_the_day");
         public void setID( String tag) {
           this.tag= tag;
         }
+
+        public void setCategory( String cat) {
+            switch(cat) {
+                case "Book":
+                   Book=mView.findViewById(R.id.Book);
+                   Book.setVisibility(View.VISIBLE);
+                    break;
+                case "DIY":
+                    DIY=mView.findViewById(R.id.DIY);
+                    DIY.setVisibility(View.VISIBLE);
+                    break;
+                case "Food":
+                    Food=mView.findViewById(R.id.Food);
+                    Food.setVisibility(View.VISIBLE);
+                    break;
+                case "Music":
+                    Music=mView.findViewById(R.id.Music);
+                    Music.setVisibility(View.VISIBLE);
+                    break;
+                case "Photo":
+                    Photo=mView.findViewById(R.id.Photo);
+                    Photo.setVisibility(View.VISIBLE);
+                    break;
+                case "Sport":
+                    Sport=mView.findViewById(R.id.Sport);
+                    Sport.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
     }
+
 
 }

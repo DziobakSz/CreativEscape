@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FINAL PROJECT</string>
+    <string name="app_name">CreativeEscape</string>
     <string name="facebook_app_id">423928491977172</string>
     <string name="fb_login_protocol_scheme">fb423928491977172</string>
     <string name="g_login_protocol_scheme">fb423928491977172</string>

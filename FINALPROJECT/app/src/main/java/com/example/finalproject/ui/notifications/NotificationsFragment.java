@@ -18,7 +18,7 @@ import com.example.finalproject.R;
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel notificationsViewModel;
-    private TextView OpisPL;
+    private TextView OpisPL1,OpisPL2;
     private TextView OpisEN;
     private TextView numbers;
 
@@ -32,12 +32,14 @@ public class NotificationsFragment extends Fragment {
             public void onChanged(@Nullable String s) {
             }
         });
-        OpisPL = (TextView) root.findViewById(R.id.opisPL);
+        OpisPL1 = (TextView) root.findViewById(R.id.opisPLpart1);
+        OpisPL2 = (TextView) root.findViewById(R.id.opisPLpart2);
         OpisEN = (TextView) root.findViewById(R.id.opisEN);
         numbers = (TextView) root.findViewById(R.id.numbers);
-        OpisPL.setText("Zdajemy sobie sprawę, że izolacja związana z pandemią może być dla wielu osób trudnym przeżyciem.\n" +
-                "Jeżeli czujesz się samotny i odczuwasz potrzebę wsparcia emocjonalnego lub psychicznego, zadzwoń na podany poniżej numer Kryzysowego Telefonu Zaufania lub umów się na wideoporadę psychologiczną ze spejcalistą.\n" +
-                "Jeżeli jesteś ofiarą przemocy domowej, zadzwoń na \"Niebieską Linię\", gdzie otrzymasz informację na temat możliwych form otrzymania pomocy.\n" +
+        OpisPL1.setText("Zdajemy sobie sprawę, że izolacja związana z pandemią może być dla wielu osób trudnym przeżyciem.\n" +
+                "Jeżeli czujesz się samotny i odczuwasz potrzebę wsparcia emocjonalnego lub psychicznego, zadzwoń na podany poniżej numer Kryzysowego Telefonu Zaufania lub umów się na wideoporadę psychologiczną ze spejcalistą.\n"
+              );
+        OpisPL2.setText(  "Jeżeli jesteś ofiarą przemocy domowej, zadzwoń na \"Niebieską Linię\", gdzie otrzymasz informację na temat możliwych form otrzymania pomocy.\n" +
                 "Jeżeli radzisz sobie ze stratą bliskiej osoby w wyniku pandemii, zadzwoń na Telefon Wsparcia Fundacji Nagle Sami.\n");
         OpisEN.setText("We are aware that social isolation caused be the current state of pandemic can be a hard and upsetting experience.\n" +
                 "If you're feeling depressed or uneasy, please contact your local suicide prevention hotline or seek professional help.");
